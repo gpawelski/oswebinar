@@ -1,0 +1,21 @@
+heat_template_version: 2013-05-23
+description: Template to deploy a simple web service on Cirros
+parameters:
+  image_name:
+    type: string
+    label: Image Name
+    description: image name
+resources:
+  websrv:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image_name }
+      flavor: m1.small
+      user_data_format: RAW
+      user_data: |
+          #!/bin/sh
+          wget http://172.24.4.1:8091/etc-rc3.d-S96-websrv -O /etc/rc3.d/S96-websrv
+          chmod a+x /etc/rc3.d/S96-websrv
+          /etc/rc3.d/S96-websrv start
+
+
